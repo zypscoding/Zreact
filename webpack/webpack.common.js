@@ -1,7 +1,42 @@
+const webpack = require('webpack')
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const isDev = process.env.NODE_ENV === 'development'
+const getCssLoaders = (importLoaders) => [
+  'style-loader',
+  {
+    loader: 'css-loader',
+    options: {
+      modules: false,
+      sourceMap: isDev,
+      importLoaders,
+    },
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      // plugins: {
+      postcssOptions:
+      {
+        ident: 'postcss',
+        // 修复一些和 flex 布局相关的 bug
+        plugins: [require('postcss-flexbugs-fixes'),
+        require('postcss-preset-env')({
+          autoprefixer: {
+            grid: true,
+            flexbox: 'no-2009'
+          },
+          stage: 3,
+        }),
+        require('postcss-normalize')],
+      }
+      ,
+      // },
+      sourceMap: isDev,
+    },
+  },
+]
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
   entry: {
@@ -10,7 +45,7 @@ module.exports = {
   output: {
     publicPath: isDev ? '/' : './',
     path: path.resolve(__dirname, isDev ? '../dist' : '../release'),
-    filename: isDev ? '[name].bundle.js' : '[name].[hash-8].bundle.js',
+    filename: isDev ? '[name].bundle.js' : '[name].[hash:8].bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
@@ -34,31 +69,46 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: getCssLoaders(1),
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: [
+          ...getCssLoaders(2),
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: isDev,
+            }
+          }]
       },
       {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        test: /\.s(a|c)ss$/,
+        use: [
+          ...getCssLoaders(2),
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDev,
+            }
+          }]
       },
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg)$/,
-        type: 'asset/resource',
-        // use: [{
-        //   loader: 'url-loader',
-        //   options: {
-        //     limit: 5 * 1024, //5kb
-        //     outputPath: 'images',
-        //     name: '[name].[hash:6].[ext]'
-        //   }
-        // }]
+        test: /\.(?:ico|gif|png|jpg|jpeg|bmp)$/,
+        // type: 'asset/resource', // 和file-loader类似(webpack5)
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 5 * 1024, //5kb
+            outputPath: 'images',
+            name: '[name].[hash:6].[ext]'
+          }
+        }],
+        type: 'javascript/auto', //防止重复加载资源
       },
       {
         test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-        type: 'asset/inline',
+        // type: 'asset/inline', //和url-loader类似(webpack5)
         use: [{
           loader: 'url-loader',
           options: {
@@ -78,8 +128,7 @@ module.exports = {
             }
           },
         ]
-      }
-
+      },
     ],
   },
   plugins: [

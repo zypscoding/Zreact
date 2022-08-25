@@ -10,7 +10,10 @@ import 'moment/locale/zh-cn';
 import './assets/scss/index.scss';
 // import '@babel/polyfill' //如果需要使用ES6/7中对象原型提供的新方法,该模块需要在使用新方法的地方直接引入
 moment.locale('zh-cn');
-
+// ts报错hot时安装 @types/webpack-env
+if (module && module.hot) {
+  module.hot.accept()
+}
 const App = () => {
   return (
     <ConfigProvider locale={zhCN}>

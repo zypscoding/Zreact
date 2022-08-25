@@ -1,3 +1,5 @@
+
+const webpack = require('webpack');
 const { merge } = require('webpack-merge')
 const webpackCommon = require('./webpack.common')
 const path = require('path');
@@ -9,6 +11,9 @@ module.exports = merge(webpackCommon, {
   plugins: [
 
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      IS_DEV: 'false',  // DefinePlugin会解析定义的环境变量表达式, 当成JS执行
+    })
   ],
   optimization: {
     minimize: true,
@@ -16,14 +21,14 @@ module.exports = merge(webpackCommon, {
       new TerserPlugin({
         extractComments: false
       }),
-      // new CopyWebpackPlugin({
-      //   patterns: [
-      //     {
-      //       from: path.join(__dirname, 'static'),
-      //       // to: 'asset'
-      //     }
-      //   ]
-      // }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(__dirname, '../static'),
+            to: 'static'
+          }
+        ]
+      }),
     ]
   }
 })
