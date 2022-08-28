@@ -1,20 +1,22 @@
-import React, { lazy, ReactElement, Suspense } from 'react';
-import { useRoutes, RouteObject } from 'react-router-dom';
+import React, { lazy, ReactElement, Suspense } from 'react'
+import { useRoutes, RouteObject } from 'react-router-dom'
 
 const lazyLoad = (route: string) => {
   const Module = lazy(() => import(`../pages/${route}`))
-  return <Suspense>
-    <Module />
-  </Suspense>
+  return (
+    <Suspense>
+      <Module />
+    </Suspense>
+  )
 }
 
 interface RouteProps extends RouteObject {
   meta?: {
-    title?: string,
-    icon?: ReactElement,
-    noLogin?: boolean,
-    hidenMenu?: boolean,
-  },
+    title?: string
+    icon?: ReactElement
+    noLogin?: boolean
+    hidenMenu?: boolean
+  }
   children?: RouteProps[]
 }
 export const routes: RouteProps[] = [
@@ -28,7 +30,7 @@ export const routes: RouteProps[] = [
         meta: {
           title: '登录'
         }
-      },
+      }
     ]
   },
   {
@@ -37,24 +39,26 @@ export const routes: RouteProps[] = [
     children: [
       {
         path: 'detail',
-        element: lazyLoad('home/detail'),
+        element: lazyLoad('home/detail')
       }
     ]
   },
   {
     path: '*',
-    element: lazyLoad('error/Page404'),
+    element: lazyLoad('error/Page404')
   },
   {
     path: 'user',
-    element: lazyLoad('user'),
+    element: lazyLoad('user')
   },
   {
     path: 'setting',
-    element: lazyLoad('setting'),
+    element: lazyLoad('setting')
   },
-];
-const Routes = () => (
-  useRoutes(routes)
-)
-export default Routes;
+  {
+    path: 'product',
+    element: lazyLoad('product')
+  }
+]
+const Routes = () => useRoutes(routes)
+export default Routes

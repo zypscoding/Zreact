@@ -1,32 +1,29 @@
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const webpackCommon = require('./webpack.common')
-const path = require('path');
+const path = require('path')
+const { ROOT_PATH } = require('./const.setting')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const proxySetting = require('./proxy.setting')
 module.exports = merge(webpackCommon, {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      IS_DEV: 'true'  // DefinePlugin会解析定义的环境变量表达式, 当成JS执行
-    })
+      IS_DEV: 'true' // DefinePlugin会解析定义的环境变量表达式, 当成JS执行
+    }),
+    new ReactRefreshWebpackPlugin() //热更新 (保留状态 测试无用 待研究)
   ],
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true, //解决history路由404问题
     hot: true,
     open: true,
-    port: 8082,
+    port: 3000,
+    static: {
+      directory: path.join(ROOT_PATH, './static') //托管静态资源static文件夹
+    },
     proxy: {
-      '/api': {
-        target: 'http://localhost:9999',
-        changOrigin: true, //是否开启代理
-        pathRewrite: {  // /api开头的请求会到target下请求
-          '^/api': '/api'   // http://localhost:9999/api/XXXX
-        }
-        // pathRewrite: {  // /api开头的请求会到target下请求
-        //   '^/api': ''   // 替换/api 为空字符 将http://localhost:9999/api/XXXX替换为http://localhost:9999/XXXX
-        // }
-      },
+      ...proxySetting
     }
-  },
+  }
 })

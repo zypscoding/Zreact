@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 
 export default class index extends Component {
   render() {
-    return (
-      <div>
-        setting page
-      </div>
-    )
+    return <div>setting page</div>
   }
 }

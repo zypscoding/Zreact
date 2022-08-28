@@ -1,75 +1,87 @@
 const webpack = require('webpack')
-const path = require('path');
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackBar = require('webpackbar')
+const { ROOT_PATH } = require('./const.setting')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 const isDev = process.env.NODE_ENV === 'development'
 const getCssLoaders = (importLoaders) => [
-  'style-loader',
+  isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
   {
     loader: 'css-loader',
     options: {
       modules: false,
       sourceMap: isDev,
-      importLoaders,
-    },
+      importLoaders
+    }
   },
   {
     loader: 'postcss-loader',
     options: {
-      // plugins: {
-      postcssOptions:
-      {
+      postcssOptions: {
         ident: 'postcss',
         // 修复一些和 flex 布局相关的 bug
-        plugins: [require('postcss-flexbugs-fixes'),
-        require('postcss-preset-env')({
-          autoprefixer: {
-            grid: true,
-            flexbox: 'no-2009'
-          },
-          stage: 3,
-        }),
-        require('postcss-normalize')],
-      }
-      ,
-      // },
-      sourceMap: isDev,
-    },
-  },
+        plugins: [
+          require('postcss-flexbugs-fixes'),
+          require('postcss-preset-env')({
+            autoprefixer: {
+              grid: true,
+              flexbox: 'no-2009'
+            },
+            stage: 3
+          }),
+          require('postcss-normalize')
+        ]
+      },
+      sourceMap: isDev
+    }
+  }
 ]
 // webpack的配置文件遵循着CommonJS规范
 module.exports = {
   entry: {
-    webUI: './src/index.tsx'
+    webUI: path.resolve(ROOT_PATH, './src/index.tsx')
   },
   output: {
-    publicPath: isDev ? '/' : './',
-    path: path.resolve(__dirname, isDev ? '../dist' : '../release'),
-    filename: isDev ? '[name].bundle.js' : '[name].[hash:8].bundle.js',
+    publicPath: '/',
+    path: path.resolve(ROOT_PATH, './release'),
+    filename: isDev ? 'js/[name].bundle.js' : 'js/[name].[chunkhash:8].bundle.js',
+    clean: true //webpack4 需配置clean-webpack-plugin来删除包文件，v5内置
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
+    alias: {
+      '@': path.join(ROOT_PATH, './src')
+    },
+    modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
+    noParse: /jquery/,
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
+        use: [
+          // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        ]
       },
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: 'ts-loader',
+        exclude: /node_modules/, //优先级更高
+        include: [path.resolve(__dirname, '../src')],
+        use: 'ts-loader'
       },
       {
         test: /\.css$/,
         use: getCssLoaders(1),
+        include: [path.resolve(__dirname, '../src'), path.resolve(__dirname, '../node_modules/antd/dist/antd.css')]
       },
       {
         test: /\.less$/,
@@ -78,9 +90,11 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              sourceMap: isDev,
+              sourceMap: isDev
             }
-          }]
+          }
+        ],
+        include: [path.resolve(__dirname, '../src')]
       },
       {
         test: /\.s(a|c)ss$/,
@@ -89,59 +103,78 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: isDev,
+              sourceMap: isDev
             }
-          }]
-      },
-      {
-        test: /\.(?:ico|gif|png|jpg|jpeg|bmp)$/,
-        // type: 'asset/resource', // 和file-loader类似(webpack5)
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 5 * 1024, //5kb
-            outputPath: 'images',
-            name: '[name].[hash:6].[ext]'
           }
-        }],
-        type: 'javascript/auto', //防止重复加载资源
-      },
-      {
-        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-        // type: 'asset/inline', //和url-loader类似(webpack5)
-        use: [{
-          loader: 'url-loader',
-          options: {
-            name: 'fonts/[name].[hash:6].[ext]',
-          }
-        }]
-      },
-      {
-        test: /\.(wav|mp3|ogg)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "url-loader", options: {
-              limit: 2000,
-              name: "music/[name].[ext]",
-              fallback: 'file-loader'
-            }
-          },
         ]
       },
-    ],
+      //webpack4 处理图片方式
+      {
+        test: /\.(?:ico|gif|png|jpg|jpeg|bmp)$/,
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10 * 1024, //小于10kb转base64
+              outputPath: 'images',
+              name: '[name].[contenthash:6].[ext]',
+              esModule: false
+            }
+          }
+        ]
+      },
+      // webpack5 处理图标方式
+      {
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024
+          }
+        },
+        generator: {
+          filename: 'fonts/[name].[contenthash:6].[ext]'
+        }
+      },
+      {
+        test: /.(mp4|mp3|aac|wav|webm|ogg|flac)$/,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024
+          }
+        },
+        generator: {
+          filename: 'media/[name].[contenthash:6].[ext]'
+        }
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: '探索demo',
-      template: path.resolve(__dirname, '../public/index.html'),
+      title: 'zReactDemo',
+      template: path.resolve(ROOT_PATH, './public/index.html'),
       filename: 'index.html',
-      favicon: './src/favicon.ico'
+      favicon: path.resolve(ROOT_PATH, './static/favicon.ico'),
+      inject: true //自动注入静态资源
     }),
     new WebpackBar({
       name: isDev ? '正在启动' : '正在打包',
-      color: '#fa8c16',
+      color: '#fa8c16'
     }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /\.\/locale/,
+      contextRegExp: /moment/
+    }),
+    new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, '../release/manifest.json')
+    }),
+    new AddAssetHtmlWebpackPlugin({
+      filepath: path.resolve(__dirname, '../release/react_dll.js')
+    })
   ],
-
+  cache: {
+    type: 'filesystem' // 使用文件缓存webpack5持久化缓存
+  }
 }

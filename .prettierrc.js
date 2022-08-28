@@ -1,7 +1,7 @@
 module.exports = {
   printWidth: 140,
   tabWidth: 2,
-  semi: true,
+  semi: false,
   singleQuote: true,
   trailingComma: 'none',
   bracketSpacing: true,
@@ -10,4 +10,4 @@ module.exports = {
   insertPragma: false,
   requirePragma: false,
   useTabs: false
-};
+}

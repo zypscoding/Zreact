@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
     "sourceMap": true, // 开启sourcemap
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
     "esModuleInterop": true,
     "allowJs": true,
-    "strict": true
-  }
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
 }

@@ -1,11 +1,5 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
-export default class index extends Component {
-  render() {
-    return (
-      <div>
-        product Page
-      </div>
-    )
-  }
+export default function index() {
+  return <div>product</div>
 }
