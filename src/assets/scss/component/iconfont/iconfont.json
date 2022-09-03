@@ -1,0 +1,30 @@
+{
+  "id": "1901902",
+  "name": "应急指挥",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3216574",
+      "name": "话筒",
+      "font_class": "huatong",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "7210575",
+      "name": "app",
+      "font_class": "app",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "925423",
+      "name": "emi纸飞机",
+      "font_class": "emizhifeiji",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    }
+  ]
+}

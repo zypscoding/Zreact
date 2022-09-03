@@ -1,5 +1,6 @@
 import React, { lazy, ReactElement, Suspense } from 'react'
-import { useRoutes, RouteObject } from 'react-router-dom'
+import { useRoutes, RouteObject,Navigate } from 'react-router-dom'
+import Layout from './layout'
 
 const lazyLoad = (route: string) => {
   const Module = lazy(() => import(`../pages/${route}`))
@@ -22,19 +23,21 @@ interface RouteProps extends RouteObject {
 export const routes: RouteProps[] = [
   {
     path: '/',
-    element: lazyLoad('login'),
-    children: [
-      {
-        path: '/login',
-        element: lazyLoad('login'),
-        meta: {
-          title: '登录'
-        }
-      }
-    ]
+    element: <Navigate to='/home' replace={true}></Navigate>,
   },
   {
-    path: 'home',
+    path: '/login',
+    element: lazyLoad('login'),
+    meta: {
+      title: '登录'
+    },
+  },
+  {
+    path: '/*',
+    element: lazyLoad('error/Page404')
+  },
+  {
+    path: '/home',
     element: lazyLoad('home'),
     children: [
       {
@@ -44,21 +47,18 @@ export const routes: RouteProps[] = [
     ]
   },
   {
-    path: '*',
-    element: lazyLoad('error/Page404')
-  },
-  {
-    path: 'user',
+    path: '/user',
     element: lazyLoad('user')
   },
   {
-    path: 'setting',
+    path: '/setting',
     element: lazyLoad('setting')
   },
   {
-    path: 'product',
+    path: '/product',
     element: lazyLoad('product')
   }
+ 
 ]
 const Routes = () => useRoutes(routes)
 export default Routes

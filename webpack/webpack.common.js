@@ -47,36 +47,77 @@ module.exports = {
     publicPath: '/',
     path: path.resolve(ROOT_PATH, './release'),
     filename: isDev ? 'js/[name].bundle.js' : 'js/[name].[chunkhash:8].bundle.js',
-    clean: true //webpack4 需配置clean-webpack-plugin来删除包文件，v5内置
+    clean: true, // 在生成文件之前清空 output 目录
+    environment: {
+      //告诉 webpack 在生成的运行时代码中可以使用哪个版本的 ES 特性。 webpack5 默认支持es6语法(不支持IE)
+      arrowFunction: false,
+      const: false,
+      destructuring: false,
+      forOf: false,
+      optionalChaining: false,
+      templateLiteral: false
+    }
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.json'],
+    extensions: ['.tsx', '.ts', '.js', '.mjs', '.json'],
     alias: {
       '@': path.join(ROOT_PATH, './src')
     },
     modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
-    noParse: /jquery/,
+    // noParse: /jquery/,
     rules: [
+      // {
+      //   test: /\.js$/,
+      //   // exclude: /node_modules/,
+      //   include: /node_modules/,
+      //   // include:[path.resolve(__dirname, '../node_modules/react-router-dom') ,path.resolve(__dirname, '../node_modules/webpack')],
+      //   use: [
+      //     // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
+      //     {
+      //       loader: 'babel-loader',
+      //     }
+      //   ]
+      // },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, '../node_modules/react-router'),
+          path.resolve(__dirname, '../node_modules/react-router-dom'),
+        ],
         use: [
           // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'usage',
+                    corejs: {
+                      // core-js的版本
+                      version: 2
+                    },
+                    // 需要兼容的浏览器
+                    targets: {
+                      chrome: '60',
+                      firefox: '60',
+                      ie: '9',
+                      safari: '10',
+                      edge: '17'
+                    }
+                  }
+                ]
+              ]
             }
           }
         ]
       },
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/, //优先级更高
-        include: [path.resolve(__dirname, '../src')],
-        use: 'ts-loader'
+        use: ['ts-loader']
       },
       {
         test: /\.css$/,
@@ -101,9 +142,12 @@ module.exports = {
         use: [
           ...getCssLoaders(2),
           {
+            loader: 'resolve-url-loader' //解决scss文件backgroundimg的url问题,需要sass-loader sourceMap
+          },
+          {
             loader: 'sass-loader',
             options: {
-              sourceMap: isDev
+              sourceMap: true // <-- !!IMPORTANT!!
             }
           }
         ]
@@ -167,12 +211,13 @@ module.exports = {
       resourceRegExp: /\.\/locale/,
       contextRegExp: /moment/
     }),
-    new webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, '../release/manifest.json')
-    }),
-    new AddAssetHtmlWebpackPlugin({
-      filepath: path.resolve(__dirname, '../release/react_dll.js')
-    })
+    new MiniCssExtractPlugin() //npm run server开启用，有别于npm run dev
+    // new webpack.DllReferencePlugin({
+    //   manifest: path.resolve(__dirname, '../release/manifest.json')
+    // }),
+    // new AddAssetHtmlWebpackPlugin({
+    //   filepath: path.resolve(__dirname, '../release/react_dll.js')
+    // })
   ],
   cache: {
     type: 'filesystem' // 使用文件缓存webpack5持久化缓存

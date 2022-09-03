@@ -14,9 +14,6 @@ module.exports = merge(webpackCommon, {
     new webpack.DefinePlugin({
       IS_DEV: 'false' // DefinePlugin会解析定义的环境变量表达式, 当成JS执行
     }),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css' // 抽离css的输出目录和名称
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -27,6 +24,9 @@ module.exports = merge(webpackCommon, {
           }
         }
       ]
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css' // 抽离css的输出目录和名称
     }),
     new CompressionPlugin({
       test: /.(js|css)$/,
@@ -47,7 +47,7 @@ module.exports = merge(webpackCommon, {
             drop_console: true,
             drop_debugger: true
           }
-        }
+        },
       }),
       new CssMinimizerPlugin() // 压缩css
     ],

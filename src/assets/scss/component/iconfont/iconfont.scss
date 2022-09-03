@@ -1,0 +1,29 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1604366656901'); /* IE9 */
+  src: url('iconfont.eot?t=1604366656901#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOUAAsAAAAAB8AAAANGAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDHAqCfIJfATYCJAMQCwoABCAFhG0HRRvOBhEVnI3IfibEYxyrKXssEV7SBCV9Z4IIbdqsVmcrch6YsApCUf5zRcD1JeCX49acA/czJkKVZO3Ioy8kD3hpOgqAg2PGK2uwPF+4RJZFJY7G49YBZX8m2b/Ig/g7AbfxytabIYCnIvWR7j37D8dhsZYJIPPnzJqCy+mxLZmCQ4jU7LU15DABzuwx14BD4e/LV5qKA0OgWGsHz+wxnc4fyn94qEKM943smM8KCIdAgfqABZlda5+KxsH6KF6bbGkJOBwG5hra8OFhGDLCs8idLWfsP54BiWClxwPQHCGFD+VdfqrYAC0CxUOkYQB+kD0OiAKLgQQsbHkYDIqpU7DwQY2sky1ZezPg3r3hDx6MzPju3x+Bj2I2Z8YK7MsuxngvDx9OdrSjtJnb6ZHm/v0pqenl9GxezalpKaXNmdwak1I215iSeqXWtPQtZf/e6ms2p6YfkC+6Ja365JQcpowaOXXKrOlT1jVrssgVqlqhaSFnpu/cOd2TGJ6Dta5Q0wpVCzlZfTpjRcE52QVzY5sVPFuwWYWmBbPnrChYkdu4ST+ZPl369XA4QWs/yawlcdX4c+6Qv96/z7VRN4KjDxrfdMP4iuO7Xx/XZXT3lP6V+o+8Vr71/Gizm2Vuju+eMv56uUNlb4zrnkqfUJb/mw5cOFD7//Nja36lupq/vcDbUSwGIDyizXURR1mnzxVpsz32FwIIjPj3XSrU/r+LWQCeXr3TmfThun4KPrygt+AfirPHAHyRLoLBWlXgKo71L8PSCoVHzfZ4IIS7KC/mUJbQ/CC4nEAAQ5QKoDiqIyymPgTEaA4RHJ3AU49eh2MUYymK2DigLjsIhMLkg6Eg50ApzHWExTyHgJJ8hwiFRcEzUoqdGcNQU+aoI+MgOMP4AzvlRI5JVJR5Q72GgbOikPxCXqwH2qopRq6YkOfYsLx1J0JAnCNc6HYYQobC2eEklREpfV1T3TdVU44bRTfGQXAGxh9gp5zIby+q9PM31GsYuKWhxv5CXuzoQEtF0wNxladeDffymuWtO0QIIM4RuJAVgx3MQKmf5XCSCjPCX3pqphn1lVfrK+MX7gA81pdYMaJiJSA6ex0kJ70fSjlgtH9jCa2zmw0AAA==') format('woff2'),
+  url('iconfont.woff?t=1604366656901') format('woff'),
+  url('iconfont.ttf?t=1604366656901') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1604366656901#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-huatong:before {
+  content: "\e67d";
+}
+
+.icon-app:before {
+  content: "\e6d7";
+}
+
+.icon-emizhifeiji:before {
+  content: "\e61c";
+}
+
