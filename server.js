@@ -2,6 +2,7 @@
  * 此方法开启服务为兼容开发环境IE调试，devServer下IE报错暂未解决
  * 需BrowserRouter -> HashRouter
  * 需解开common里的new MiniCssExtractPlugin()
+ * 需注释 new ReactRefreshWebpackPlugin()
  * 热更新还需配置
  */
 const express = require('express')
