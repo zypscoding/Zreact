@@ -1,7 +1,6 @@
 import React, { Component, lazy, Suspense } from 'react'
 import { Button } from 'antd'
 import axios from 'axios'
-import imgsrc from '@/assets/imgs/popup.png'
 import Demo2 from '@/components/Demo2'
 import Demo1 from '@/components/Demo1'
 import moment from 'moment'
@@ -33,7 +32,6 @@ export default class index extends Component {
         login Page<Button type="primary">login</Button>
         <h2>我是类组件---{this.age}</h2>
         <img src={require('../../assets/imgs/logo192.png')}></img>
-        <img src={imgsrc}></img>
       </div>
     )
   }

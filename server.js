@@ -3,7 +3,6 @@
  * 需BrowserRouter -> HashRouter
  * 需解开common里的new MiniCssExtractPlugin()
  * 需注释 new ReactRefreshWebpackPlugin()
- * 热更新还需配置
  */
 const express = require('express')
 const webpack = require('webpack')

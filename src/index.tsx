@@ -1,7 +1,7 @@
 import '@babel/polyfill'
 import React, { Fragment, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import 'antd/dist/antd.css'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'

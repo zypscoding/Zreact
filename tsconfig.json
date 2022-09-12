@@ -6,7 +6,7 @@
     "jsx": "react",
     "esModuleInterop": true,
     "allowJs": true,
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

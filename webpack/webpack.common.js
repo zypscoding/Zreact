@@ -66,20 +66,7 @@ module.exports = {
     modules: [path.resolve(__dirname, '../node_modules')]
   },
   module: {
-    // noParse: /jquery/,
     rules: [
-      // {
-      //   test: /\.js$/,
-      //   // exclude: /node_modules/,
-      //   include: /node_modules/,
-      //   // include:[path.resolve(__dirname, '../node_modules/react-router-dom') ,path.resolve(__dirname, '../node_modules/webpack')],
-      //   use: [
-      //     // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
-      //     {
-      //       loader: 'babel-loader',
-      //     }
-      //   ]
-      // },
       {
         test: /\.js$/,
         include: [
@@ -90,28 +77,6 @@ module.exports = {
           // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
           {
             loader: 'babel-loader',
-            options: {
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'usage',
-                    corejs: {
-                      // core-js的版本
-                      version: 2
-                    },
-                    // 需要兼容的浏览器
-                    targets: {
-                      chrome: '60',
-                      firefox: '60',
-                      ie: '9',
-                      safari: '10',
-                      edge: '17'
-                    }
-                  }
-                ]
-              ]
-            }
           }
         ]
       },
@@ -211,7 +176,7 @@ module.exports = {
       resourceRegExp: /\.\/locale/,
       contextRegExp: /moment/
     }),
-    new MiniCssExtractPlugin() //npm run server开启用，有别于npm run dev
+    // new MiniCssExtractPlugin() //npm run server开启用，有别于npm run dev
     // new webpack.DllReferencePlugin({
     //   manifest: path.resolve(__dirname, '../release/manifest.json')
     // }),
