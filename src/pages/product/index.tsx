@@ -20,7 +20,6 @@ export default function index() {
     logger: m => console.log(m),
   });
   const doOCR = async (Base64) => {
-    // debugger
     const start = moment(new Date()).format('YYYY-MM-DD HH:SS:mm')
     console.log(start)
     await worker.load();
@@ -66,12 +65,6 @@ export default function index() {
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile)
-      const img = require('@/assets/imgs/or.png')
-      
-      console.log(img)
-      // const str =  OCRAD(img)
-      // const str =  OCRAD(file.preview)
-      // console.log(str)
     }
     doOCR(file.preview)
     setPreviewImage(file.url || (file.preview as string))
