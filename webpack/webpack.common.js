@@ -69,20 +69,24 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: [
-          path.resolve(__dirname, '../node_modules/react-router'),
-          path.resolve(__dirname, '../node_modules/react-router-dom'),
-        ],
+        include: [path.resolve(__dirname, '../node_modules/react-router'), path.resolve(__dirname, '../node_modules/react-router-dom')],
         use: [
           // 'thread-loader', //不支持抽离css 启动时间大约600ms左右,适合规模比较大的项目
           {
-            loader: 'babel-loader',
+            loader: 'babel-loader'
           }
         ]
       },
       {
         test: /\.tsx?$/,
-        use: ['ts-loader']
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              allowTsInNodeModules: true
+            }
+          }
+        ]
       },
       {
         test: /\.css$/,
@@ -175,7 +179,7 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /\.\/locale/,
       contextRegExp: /moment/
-    }),
+    })
     // new MiniCssExtractPlugin() //npm run server开启用，有别于npm run dev
     // new webpack.DllReferencePlugin({
     //   manifest: path.resolve(__dirname, '../release/manifest.json')
