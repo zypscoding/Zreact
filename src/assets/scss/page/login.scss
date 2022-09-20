@@ -1,5 +1,35 @@
 #login {
-  color: chocolate;
-  display: flex;
+  width: 100%;
+  height: 100%;
+  color: $content;
   background-image: url('../../imgs/bg.jpg');
+  .login-form {
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .ant-form-item-label > label {
+    color: $color;
+  }
+  .ant-input {
+    background-color: $bg-color;
+    border-color: $border-color;
+    color: $content;
+  }
+  .ant-input-affix-wrapper {
+    background-color: $bg-color;
+    border-color: $border-color;
+  }
+  .ant-checkbox-wrapper {
+    color: $color;
+  }
+  .ant-input-password-icon.anticon {
+    color: $color;
+  }
+  .ant-btn-primary {
+    background-color: transparent;
+  }
 }

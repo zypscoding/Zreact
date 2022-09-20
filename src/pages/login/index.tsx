@@ -1,39 +1,65 @@
-import React, { Component, lazy, Suspense } from 'react'
-import { Button } from 'antd'
-import axios from 'axios'
-import Demo2 from '@/components/Demo2'
-import Demo1 from '@/components/Demo1'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
-
-moment.locale('zh-cn')
-// 装饰器为,组件添加age属性
-function addAge(Target: Function) {
-  Target.prototype.age = 111
-}
-// 使用装饰圈
-@addAge
-export default class index extends Component {
-  age?: number
-  componentDidMount() {
-    // axios.get('/api/v1/getUser').then((res) => { console.log(res)}, (err) => {
-    //   console.log(err)
-    // })
-    // console.log(import('axios'))
-    console.log('zyp----')
+import { Button, Checkbox, Form, Input, Drawer } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+const App: React.FC = () => {
+  const navigate = useNavigate()
+  const onFinish = (values: any) => {
+    console.log('Success:', values)
+    navigate('/home')
+  }
+  useEffect(() => {}, [])
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
+  }
+  const jump = () => {
+    navigate('/product')
+  }
+  const [open, setOpen] = useState(false)
+  const showDrawer = () => {
+    setOpen(true)
   }
 
-  render() {
-    return (
-      <div id="login">
-        1112{moment().subtract(6, 'days').calendar()}
-        <Demo1 />
-        {/* <Button onClick={Prejquery}>jquery</Button> */}
-        login Page<Button type="primary">login</Button>
-        <h2>我是类组件---{this.age}</h2>
-        <img src={require('../../assets/imgs/logo192.png')}></img>
-      </div>
-    )
+  const onClose = () => {
+    setOpen(false)
   }
+  console.log(open)
+  return (
+    <div id="login">
+      <Form
+        name="basic"
+        className="login-form"
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off">
+        <Form.Item label="Username" name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
+          <Input placeholder="admin" />
+        </Form.Item>
+
+        <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Input.Password placeholder="111" />
+        </Form.Item>
+
+        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      <div onClick={showDrawer} style={{position:'fixed',right: 0, top:24, margin: 6, fontSize: 16, fontFamily: 'cursive', color:"#10e9ff", cursor:'pointer'}}>&lt;</div>
+      <Drawer  title="实验室" placement="right" onClose={onClose} visible={open}>
+        <Button onClick={jump} type="link">
+          探索
+        </Button>
+      </Drawer>
+    </div>
+  )
 }
 
+export default App

@@ -7,6 +7,7 @@ import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
 import Routers from './routes'
 import './assets/scss/index.scss'
+import WaterMark from '@ekkoling/utils/src/zui/waterMark'
 
 // ts报错hot时安装 @types/webpack-env
 if (module && module.hot) {
@@ -15,6 +16,7 @@ if (module && module.hot) {
 const App = () => {
   return (
     <ConfigProvider locale={zhCN}>
+      <WaterMark content="ekkoling" />
       <Fragment>
         <Router>
           <Routers />

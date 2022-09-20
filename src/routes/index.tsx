@@ -23,7 +23,7 @@ interface RouteProps extends RouteObject {
 export const routes: RouteProps[] = [
   {
     path: '/',
-    element: <Navigate to='/home' replace={true}></Navigate>,
+    element: <Navigate to='/login' replace={true}></Navigate>,
   },
   {
     path: '/login',

@@ -11,7 +11,6 @@ import { formatMoney, prefixInteger } from '@/utils/utils'
 import HealthMap from './HealthMap'
 import EventList from './eventList'
 import ChinaMap from './chinaMap'
-
 const index: React.FC = () => {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const handleScreen = () => {
